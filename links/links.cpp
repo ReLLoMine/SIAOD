@@ -14,15 +14,15 @@ std::cout << "Elapsed: " << duration_cast<microseconds>(system_clock::now().time
 #define SIZE 1000
 
 long long int counter[SIZE] = { 0 };
+long long int sum = 0;
 
 // n - номер строки
 #define comp(n) ++counter[n] &&
 #define ass(n) ++counter[n];
 
-#define clear_arr for (auto &i : counter) i = 0;
+#define clear_arr for (auto &i : counter) i = 0; sum = 0; 
 
-#define show_result long long int sum = 0;\
-for (auto i : counter)\
+#define show_result for (auto i : counter)\
 	{sum += i;}\
 std::cout << "Compares/Assignments: " << sum << std::endl;\
 for (int i = 0; i < SIZE; i++)\
@@ -162,50 +162,75 @@ int main()
 
 	int* arr = new int[n];
 
-	std::cout << "Rand? M/R/D/A :>";
+	//std::cout << "Rand? M/R/D/A :>";
 
-	std::cin >> ch;
+	//std::cin >> ch;
 
-	if (ch == 'R')
-	{
-		for (int i = 0; i < n; i++)
-		{
-			arr[i] = rand() % 101;
-		}
+	//if (ch == 'R')
+	//{
+	//	for (int i = 0; i < n; i++)
+	//	{
+	//		arr[i] = rand() % 101;
+	//	}
 
-		if (n < 1000)
-		{
-			for (int i = 0; i < n; i++)
-			{
-				std::cout << arr[i] << " ";
-			}
-			std::cout << std::endl;
-		}
-	}
-	else if (ch == 'A')
+	//	if (n < 1000)
+	//	{
+	//		for (int i = 0; i < n; i++)
+	//		{
+	//			std::cout << arr[i] << " ";
+	//		}
+	//		std::cout << std::endl;
+	//	}
+	//}
+	//else if (ch == 'A')
+	//{
+	//	for (int i = 0; i < n; i++)
+	//	{
+	//		arr[i] = i;
+	//	}
+	//}
+	//else if (ch == 'D')
+	//{
+	//	for (int i = 0; i < n; i++)
+	//	{
+	//		arr[i] = n - i;
+	//	}
+	//}
+	//else if (ch == 'M')
+	//{
+	//	for (int i = 0; i < n; i++)
+	//	{
+	//		std::cin >> arr[i];
+	//	}
+	//}
+
+	for (int i = 0; i < n; i++)
 	{
-		for (int i = 0; i < n; i++)
-		{
-			arr[i] = i;
-		}
-	}
-	else if (ch == 'D')
-	{
-		for (int i = 0; i < n; i++)
-		{
-			arr[i] = n - i;
-		}
-	}
-	else if (ch == 'M')
-	{
-		for (int i = 0; i < n; i++)
-		{
-			std::cin >> arr[i];
-		}
+		arr[i] = rand();
 	}
 
-	measure(shakerSort(arr, n););
+	measure(insertionSort(arr, n););
 	show_result
+	clear_arr
+
+	for (int i = 0; i < n; i++)
+	{
+		arr[i] = i;
+	}
+
+	measure(insertionSort(arr, n););
+	show_result
+	clear_arr
+
+	for (int i = 0; i < n; i++)
+	{
+		arr[i] = n - i;
+	}
+
+	measure(insertionSort(arr, n););
+	show_result
+	clear_arr
+
 
 	wait();
 }
