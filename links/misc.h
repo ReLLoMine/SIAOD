@@ -24,14 +24,11 @@
 
 #define eps 0.00000001
 
-
 bool is_eq(double val1, double val2);
-
 bool is_zero(double val);
-
 void yes_no();
-
 void incorrect_input();
+int sizef(const char* filen);
 
 template <typename T>
 std::string to_stringtm(T num, int precision = 0)

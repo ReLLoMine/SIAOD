@@ -1,11 +1,43 @@
 #include "sorts.h"
-#include "misc.h"
+#include "lists.h"
+
+extern IO io;
 
 int main()
 {
-	bool run = true;
-	IO io;
+	list<int> list;
 
+	size_t len = io.input<size_t>("Length: ", true);
+
+	for (size_t i = 0; i < len; i++)
+	{
+		list.push_back(io.input<int>("", true));
+	}
+
+	list.move_max_to_end();
+	list.print();
+	io.input<int>();
+}
+
+void outer_sorts()
+{
+	int size = sizef("in.txt");
+
+	Split(size / 4, "a", "b", "in.txt");
+
+	measure(
+		for (int n = 1; n < size; n *= 2)
+		{
+			split(n, "a", "b", "in.txt");
+			mergeFilesByN<int>("a", "b", "in.txt", n, size);
+		}
+	);
+	io.input<int>();
+}
+
+void sorts()
+{
+	bool run = true;
 	while (run)
 	{
 		std::srand(3974598235);
@@ -67,17 +99,17 @@ int main()
 
 		measure(MergeSort(arr, n - 1););
 		show_result
-		clear_arr
+			clear_arr
 
-		if (n < 1000)
-		{
-			for (int i = 0; i < n; i++)
+			if (n < 1000)
 			{
-				std::cout << arr[i] << " ";
+				for (int i = 0; i < n; i++)
+				{
+					std::cout << arr[i] << " ";
+				}
+				std::cout << std::endl;
 			}
-			std::cout << std::endl;
-		}
-		if(arr)
+		if (arr)
 			delete[] arr;
 	}
 }

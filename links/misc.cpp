@@ -1,5 +1,7 @@
 #include "misc.h"
 
+IO io;
+
 bool is_zero(double val)
 {
 	return abs(val) < eps;
@@ -18,4 +20,15 @@ void yes_no()
 void incorrect_input()
 {
 	std::cout << "Incorrect input\n";
+}
+
+int sizef(const char* filen)
+{
+    std::ifstream file(filen);
+    std::string line;
+    int count = 0;
+    while (getline(file, line)) {
+        count++;
+    }
+    return count;
 }
