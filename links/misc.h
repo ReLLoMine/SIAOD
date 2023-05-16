@@ -1,5 +1,6 @@
 #pragma once
 
+#include <format>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -11,7 +12,14 @@
 #include <locale>
 #include <cassert>
 #include <iomanip>
+#include <ctime>
+#include <chrono>
+#include <typeinfo>
+#include "date.h"
 
+using std::chrono::time_point;
+using std::chrono::seconds;
+using std::chrono::milliseconds;
 
 #define forinrange(var, end) for(int var = 0; var < end; var++)
 #define forinranges(var, start, end) for(int var = start; var < end; var++)

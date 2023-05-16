@@ -1,22 +1,103 @@
 #include "sorts.h"
 #include "lists.h"
+#include "structs.h"
 
 extern IO io;
 
-int main()
+int dual_list()
 {
-	list<int> list;
+	bool run = true;
 
-	size_t len = io.input<size_t>("Length: ", true);
-
-	for (size_t i = 0; i < len; i++)
+	while (run)
 	{
-		list.push_back(io.input<int>("", true));
-	}
+		dll::list<int> list;
+		srand(time(0));
 
-	list.move_max_to_end();
-	list.print();
-	io.input<int>();
+		char mode = io.input<char>("Mode (R)emove Negative / (A)dd 2 before last / (M)ove max to the end / (Q)uit: ", true);
+
+		if (mode == 'Q') return 0;
+
+		size_t len = io.input<size_t>("Length: ", true);
+
+		char fill_mode = io.input<char>("Fill (M)anual / (R)andom: ", true);
+
+		for (size_t i = 0; i < len; i++)
+		{
+			if (fill_mode == 'M')
+				list.push_back(io.input<int>("", true));
+			else
+				list.push_back(rand() % 202 - 101);
+		}
+		io.output("Original list: ", "");
+		list.print();
+		list.print(true);
+
+		switch (mode)
+		{
+		case 'R':
+			break;
+		case 'A':
+			break;
+		case 'M':
+			break;
+		default:
+			io.output("Wrong Mode: ", "");
+			io.output(mode);
+			break;
+		}
+
+		io.output("List: ", "");
+		list.print();
+	}
+}
+
+int single_list()
+{
+	bool run = true;
+
+	while (run)
+	{
+		sll::list<int> list;
+		srand(time(0));
+
+		char mode = io.input<char>("Mode (R)emove Negative / (A)dd 2 before last / (M)ove max to the end / (Q)uit: ", true);
+
+		if (mode == 'Q') return 0;
+
+		size_t len = io.input<size_t>("Length: ", true);
+
+		char fill_mode = io.input<char>("Fill (M)anual / (R)andom: ", true);
+
+		for (size_t i = 0; i < len; i++)
+		{
+			if (fill_mode == 'M')
+				list.push_back(io.input<int>("", true));
+			else
+				list.push_back(rand() % 202 - 101);
+		}
+		io.output("Original list: ", "");
+		list.print();
+
+		switch (mode)
+		{
+		case 'R':
+			list.remove_negative();
+			break;
+		case 'A':
+			list.add_2_before_last(io.input<int>("Node 1: "), io.input<int>("Node 2: "));
+			break;
+		case 'M':
+			list.move_max_to_end();
+			break;
+		default:
+			io.output("Wrong Mode: ", "");
+			io.output(mode);
+			break;
+		}
+
+		io.output("List: ", "");
+		list.print();
+	}
 }
 
 void outer_sorts()
@@ -112,4 +193,11 @@ void sorts()
 		if (arr)
 			delete[] arr;
 	}
+}
+
+int main()
+{
+	io.output(get_random_goods());
+	io.input<int>();
+	//return dual_list();
 }

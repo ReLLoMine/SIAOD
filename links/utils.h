@@ -1,6 +1,5 @@
 #pragma once
-#include <ctime>
-#include <chrono>
+#include "misc.h"
 
 using namespace std::chrono;
 
