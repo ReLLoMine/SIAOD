@@ -1,6 +1,7 @@
 #include "sorts.h"
 #include "lists.h"
 #include "structs.h"
+#include "recursion.h"
 
 extern IO io;
 
@@ -187,9 +188,9 @@ void sorts()
 			continue;
 		}
 
-		measure(MergeSort(arr, n - 1););
-		show_result
-			clear_arr
+		measure(MergeSort(arr, n - 1));
+		show_result;
+		clear_arr;
 
 			if (n < 1000)
 			{
@@ -204,7 +205,39 @@ void sorts()
 	}
 }
 
+int recursion()
+{
+	srand(time(0));
+	std::vector<int> arr;
+
+	char fill_mode = io.input<char>("Select filling mode (M)anual/(R)andom/(Q)uit: ", true);
+
+	if (fill_mode == 'Q') return 0;
+
+	size_t len = io.input<size_t>("Length: ", true);
+
+	for (size_t i = 0; i < len; i++)
+	{
+		if (fill_mode == 'M')
+			arr.push_back(io.input<int>("", true));
+		else
+			arr.push_back(rand());
+	}
+
+	io.output("Max value: ", "");
+	measure(io.output(recur_max(arr, 0, arr.size() - 1)));
+
+	io.output("Max value: ", "");
+	measure(io.output(lin_max(arr)));
+
+	io.output("Function calls: ", "");
+	io.output(counter[1]);
+
+	io.input<int>();
+	return 0;
+}
+
 int main()
 {
-	return dual_list();
+	return recursion();
 }
