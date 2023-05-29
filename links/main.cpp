@@ -122,6 +122,7 @@ void outer_sorts()
 			split(n, "a", "b", "in.txt");
 			mergeFilesByN<int>("a", "b", "in.txt", n, size);
 		}
+	, "Elapsed: "
 	);
 	io.input<int>();
 }
@@ -188,7 +189,7 @@ void sorts()
 			continue;
 		}
 
-		measure(MergeSort(arr, n - 1));
+		measure(MergeSort(arr, n - 1), "Elapsed: ");
 		show_result;
 		clear_arr;
 
@@ -207,6 +208,8 @@ void sorts()
 
 int recursion()
 {
+	recur_queue();
+
 	srand(time(0));
 	std::vector<int> arr;
 
@@ -225,10 +228,10 @@ int recursion()
 	}
 
 	io.output("Max value: ", "");
-	measure(io.output(recur_max(arr, 0, arr.size() - 1)));
+	measure(io.output(recur_max(arr, 0, arr.size() - 1)), "Recursion: ");
 
 	io.output("Max value: ", "");
-	measure(io.output(lin_max(arr)));
+	measure(io.output(lin_max(arr)), "Iterational: ");
 
 	io.output("Function calls: ", "");
 	io.output(counter[1]);

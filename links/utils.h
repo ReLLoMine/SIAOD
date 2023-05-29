@@ -3,10 +3,10 @@
 
 using namespace std::chrono;
 
-#define measure(function) {\
+#define measure(function, msg) {\
 auto start = duration_cast<microseconds>(system_clock::now().time_since_epoch()).count();\
 function;\
-std::cout << "Elapsed: " << duration_cast<microseconds>(system_clock::now().time_since_epoch()).count() - start  << " microseconds" << std::endl;\
+std::cout << msg << duration_cast<microseconds>(system_clock::now().time_since_epoch()).count() - start  << " microseconds" << std::endl;\
 }
 
 #define SIZE 1000
