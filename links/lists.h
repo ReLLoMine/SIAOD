@@ -221,7 +221,7 @@ namespace dll
 			first = node_ptr;
 		}
 
-		void print(bool reversed = false) // ¬ывод значений св€зного списка
+		void print(bool reversed = false, std::string sep=" ") // ¬ывод значений св€зного списка
 		{
 			if (is_empty()) return;
 
@@ -230,7 +230,7 @@ namespace dll
 				Node<T>* node_ptr = last;
 				while (node_ptr)
 				{
-					io.output(node_ptr->val, " ");
+					io.output(node_ptr->val, sep);
 					node_ptr = node_ptr->prev;
 				}
 				io.output("");
@@ -240,7 +240,7 @@ namespace dll
 				Node<T>* node_ptr = first;
 				while (node_ptr)
 				{
-					io.output(node_ptr->val, " ");
+					io.output(node_ptr->val, sep);
 					node_ptr = node_ptr->next;
 				}
 				io.output("");
@@ -353,18 +353,50 @@ namespace dll
 			delete cursor;
 		}
 
+		void remove(Node<T> *valPtr) // ”даление из св€зного списка
+		{
+			if (is_empty()) return;
+
+			if (first== valPtr)
+			{
+				remove_first();
+				return;
+			}
+			else if (last == valPtr)
+			{
+				remove_last();
+				return;
+			}
+
+			Node<T>* cursor = first;
+
+			while (cursor and cursor != valPtr)
+				cursor = cursor->next;
+
+			if (!cursor)
+			{
+				io.output("This element doesnn't exist");
+				return;
+			}
+
+			cursor->next->prev = cursor->prev;
+			cursor->prev->next = cursor->next;
+
+			delete cursor;
+		}
+
 		void sort() // ‘ункци€ дл€ упор€дочивани€ односв€зного списка // insertion_sort()
 		{
 			if (first == nullptr)
 			{
 				return; // если список пуст, ничего не делаем
 			}
-			Node* sorted_list = nullptr; // создаем новый список дл€ отсортированных элементов
-			Node* current = first;
+			Node<T>* sorted_list = nullptr; // создаем новый список дл€ отсортированных элементов
+			Node<T>* current = first;
 
 			while (current != nullptr)
 			{
-				Node* next = current->next;
+				Node<T>* next = current->next;
 				if (sorted_list == nullptr || current->val < sorted_list->val)
 				{
 					// если отсортированный список пуст или значение текущего элемента меньше значени€ первого элемента в отсортированном списке,
@@ -375,7 +407,7 @@ namespace dll
 				else
 				{
 					// иначе ищем место в отсортированном списке, перед которым нужно вставитьттекущий элемент
-					Node* sorted_current = sorted_list;
+					Node<T>* sorted_current = sorted_list;
 					while (sorted_current->next != nullptr && current->val >= sorted_current->next->val)
 					{
 						sorted_current = sorted_current->next;

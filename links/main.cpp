@@ -10,44 +10,53 @@ int dual_list()
 
 	while (run)
 	{
-		dll::list<int> list;
 		srand(time(0));
 
-		char mode = io.input<char>("Mode (R)emove Negative / (A)dd 2 before last / (M)ove max to the end / (Q)uit: ", true);
+		dll::list<Goods> list;
 
-		if (mode == 'Q') return 0;
+		char fill_mode = io.input<char>("Select filling mode (M)anual/(R)andom/(Q)uit: ", true);
+
+		if (fill_mode == 'Q') return 0;
 
 		size_t len = io.input<size_t>("Length: ", true);
-
-		char fill_mode = io.input<char>("Fill (M)anual / (R)andom: ", true);
 
 		for (size_t i = 0; i < len; i++)
 		{
 			if (fill_mode == 'M')
-				list.push_back(io.input<int>("", true));
+				list.push_back(io.input<Goods>("", true));
 			else
-				list.push_back(rand() % 202 - 101);
+				list.push_back(get_random_goods());
 		}
-		io.output("Original list: ", "");
-		list.print();
-		list.print(true);
+
+		io.output("\nYour list: ");
+		list.print(false, "\n");
+		io.output("Your reversed list: ");
+		list.print(true, "\n");
+
+		char mode = io.input<char>("Select function to apply (S)ort/(M)ove refunded to head/(D)elete by date: ", true);
 
 		switch (mode)
 		{
-		case 'R':
-			break;
-		case 'A':
+		case 'S':
+			list.sort();
 			break;
 		case 'M':
+			move_refund(list);
 			break;
+		case 'D':
+		{
+			Date date = io.input<Date>("Delete items sold by: ", true);
+			delete_by_date(list, date);
+			break;
+		}
 		default:
 			io.output("Wrong Mode: ", "");
 			io.output(mode);
 			break;
 		}
 
-		io.output("List: ", "");
-		list.print();
+		io.output("\nResult: ");
+		list.print(false, "\n");
 	}
 }
 
@@ -197,7 +206,5 @@ void sorts()
 
 int main()
 {
-	io.output(get_random_goods());
-	io.input<int>();
-	//return dual_list();
+	return dual_list();
 }
