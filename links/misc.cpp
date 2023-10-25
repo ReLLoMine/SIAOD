@@ -7,6 +7,21 @@ bool is_zero(double val)
 	return abs(val) < eps;
 }
 
+std::string int_4bits(int num)
+{
+    return std::bitset<4>(num).to_string();
+}
+
+std::string int_8bits(int num)
+{
+    return std::bitset<8>(num).to_string();
+}
+
+std::string int_16bits(int num)
+{
+    return std::bitset<16>(num).to_string();
+}
+
 bool is_eq(double val1, double val2)
 {
 	return abs(val1 - val2) < eps;

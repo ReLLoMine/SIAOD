@@ -16,6 +16,7 @@
 #include <chrono>
 #include <typeinfo>
 #include "date.h"
+#include <bitset>
 
 using std::chrono::time_point;
 using std::chrono::seconds;
@@ -32,6 +33,9 @@ using std::chrono::milliseconds;
 
 #define eps 0.00000001
 
+std::string int_4bits(int num);
+std::string int_8bits(int num);
+std::string int_16bits(int num);
 bool is_eq(double val1, double val2);
 bool is_zero(double val);
 void yes_no();
@@ -160,6 +164,80 @@ template<typename T>
 void IO::foutput(T val, std::ofstream& ofs, std::string end)
 {
 	ofs << val << end;
+}
+
+
+class FIO
+{
+private:
+	std::ifstream in;
+	std::ofstream out;
+public:
+
+	FIO(std::string in, std::string out)
+	{
+		this->in.open(in);
+		this->out.open(out);
+	}
+
+	std::string getline(std::string prompt = "")
+	{
+		this->out << prompt;
+		std::string res;
+		char buf;
+
+		this->in.get(buf);
+
+		if (buf != '\n')
+			res += buf;
+
+		while (this->in.get(buf))
+		{
+			if (buf != '\n')
+				res += buf;
+			else
+				break;
+		}
+		return res;
+	}
+
+	template<typename T>
+	T input(std::string prompt = "", bool wait = false);
+
+	template<typename T>
+	void output(T val, std::string end = "\n");
+};
+
+template<typename T>
+T FIO::input(std::string prompt, bool wait)
+{
+	T in;
+	bool succes = false;
+
+	while (not succes)
+	{
+		this->out << prompt;
+		this->in >> in;
+
+		if (this->in.fail())
+		{
+			this->out << "Wrong type! <" << typeid(T).name() << "> expected." << std::endl;
+			this->in.clear();
+			std::string shit;
+			this->in >> shit;
+			succes = not wait;
+		}
+		else
+			succes = true;
+	}
+
+	return in;
+}
+
+template<typename T>
+void FIO::output(T val, std::string end)
+{
+	this->out << val << end;
 }
 
 template <typename T>

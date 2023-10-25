@@ -240,53 +240,132 @@ int recursion()
 	return 0;
 }
 
-int bitwise_operations()
-{	
+void bitwise_one()
+{
 	unsigned int num = 0;
 	unsigned int mask = 0;
+	unsigned int bit_n = 0;
 
-	char mode = io.input<char>("Choose ");
+	num = 0b0;
+	mask = 0b101 << 5;
+	num |= mask;
+	io.output("Res: ", "");
+	io.output(std::bitset<32>(num).to_string());
+
+	num = io.input<unsigned int>("2. Num: ");
+	mask = ~(0b1111 << 7);
+	num &= mask;
+	io.output("Res: ", "");
+	io.output(std::bitset<32>(num).to_string());
+
+	num = io.input<unsigned int>("3. Num: ");
+	num <<= 3;
+	num &= mask;
+	io.output("Res: ", "");
+	io.output(std::bitset<32>(num).to_string());
+
+	num = io.input<unsigned int>("4. Num: ");
+	num >>= 4;
+	num &= mask;
+	io.output("Res: ", "");
+	io.output(std::bitset<32>(num).to_string());
+
+	num = io.input<unsigned int>("5. Num: ");
+	bit_n = io.input<unsigned int>("5. Bit's N: ");
+	mask = 0b1 << bit_n;
+	num &= mask;
+	io.output("Res: ", "");
+	io.output(std::bitset<32>(num).to_string());
+
+}
+
+class bitarray
+{
+private:
+	unsigned char *arr;
+	int size;
+
+public:
+	int getsize()
+	{
+		return this->size;
+	}
+
+	bitarray(int size){
+		this->size = size;
+		arr = new unsigned char[size / 8];
+	}
+
+	void setbit(int index)
+	{
+		arr[((size - index - 1) / 8)] |= 0b1 << (index % 8);
+	}
+
+	void resetbit(int index)
+	{
+		arr[((size - index - 1) / 8)] &= ~(0b1 << (index % 8));
+	}
+
+	bool operator[](int index)
+	{
+		return (arr[(size - index - 1) / 8] & 0b1 << (index % 8)) == (0b1 << (index % 8));
+	}
+};
+
+void bitwise_two()
+{
+	bitarray arr(64);
+	
+	int val = 0;
+
+	for (size_t i = 0; i < 64; i++)
+	{
+		arr.setbit(io.input<int>("# "));
+	}
+	io.output("Array: ", "");
+	for (size_t i = 0; i < 64; i++)	
+	{
+		if (arr[i])
+		{
+			io.output(i, " ");
+		}
+	}
+}
+
+void bitwise_three()
+{
+	FIO fio("bita", "bitb");
+	int size = fio.input<int>();
+	bitarray array(size);
+	for (size_t i = 0; i < size; i++)
+	{
+		array.setbit(fio.input<int>());
+	}
+	for (size_t i = 0; i < size; i++)
+	{
+		if (array[i])
+			fio.output(i);
+	}
+}
+
+int bitwise_operations()
+{	
+	char mode = io.input<char>("Choose: ");
 
 	switch (mode)
 	{
 	case '1':
-		num = 0b0;
-		mask = 0b101 << 5;
-		num |= mask;
-		io.output(std::bitset<32>(num).to_string());
-
-		num = io.input<unsigned int>("2. Num: ");
-		mask = ~(0b1111 << 7);
-		num &= mask;
-		io.output(std::bitset<32>(num).to_string());
-
-		num = io.input<unsigned int>("3. Num: ");
-		num <<= 3;
-		num &= mask;
-		io.output(std::bitset<32>(num).to_string());
-
-		num = io.input<unsigned int>("4. Num: ");
-		num >>= 4;
-		num &= mask;
-		io.output(std::bitset<32>(num).to_string());
-
-		num = io.input<unsigned int>("5. Num: ");
-		mask = ~(0b1111 << 7);
-		num &= mask;
-		io.output("Res");
-		io.output(std::bitset<32>(num).to_string());
-
+		bitwise_one();
+		break;
+	case '2':
+		bitwise_two();
+		break;
+	case '3':
+		bitwise_three();
 		break;
 	default:
 		break;
 	}
-
-	unsigned int num2 = io.input<unsigned int>();
-	unsigned int mask2 = ~(0b1111 << 7);
-	num2 &= mask2;
-	io.output(std::bitset<32>(num2).to_string());
-
-
 
 	io.input<int>();
 	return 0;
