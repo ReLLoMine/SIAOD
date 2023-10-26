@@ -170,28 +170,30 @@ void IO::foutput(T val, std::ofstream& ofs, std::string end)
 class FIO
 {
 private:
-	std::ifstream in;
-	std::ofstream out;
+	std::ifstream _in;
+	std::ofstream _out;
+	bool _was_error = false;
+	bool _send_err = false;
 public:
 
 	FIO(std::string in, std::string out)
 	{
-		this->in.open(in);
-		this->out.open(out);
+		this->_in.open(in);
+		this->_out.open(out);
 	}
 
 	std::string getline(std::string prompt = "")
 	{
-		this->out << prompt;
+		this->_out << prompt;
 		std::string res;
 		char buf;
 
-		this->in.get(buf);
+		this->_in.get(buf);
 
 		if (buf != '\n')
 			res += buf;
 
-		while (this->in.get(buf))
+		while (this->_in.get(buf))
 		{
 			if (buf != '\n')
 				res += buf;
@@ -199,6 +201,21 @@ public:
 				break;
 		}
 		return res;
+	}
+
+	bool was_error()
+	{
+		return this->_was_error;
+	}
+
+	void clear_error()
+	{
+		this->_was_error = false;
+	}
+
+	bool is_end()
+	{
+		return this->_in.eof();
 	}
 
 	template<typename T>
@@ -216,19 +233,24 @@ T FIO::input(std::string prompt, bool wait)
 
 	while (not succes)
 	{
-		this->out << prompt;
-		this->in >> in;
+		this->_out << prompt;
+		this->_in >> in;
 
-		if (this->in.fail())
-		{
-			this->out << "Wrong type! <" << typeid(T).name() << "> expected." << std::endl;
-			this->in.clear();
+		if (this->_in.fail())
+		{	
+			if(_send_err)
+				this->_out << "Wrong type! <" << typeid(T).name() << "> expected." << std::endl;
+			this->_in.clear();
 			std::string shit;
-			this->in >> shit;
+			this->_in >> shit;
 			succes = not wait;
+			_was_error = true;
 		}
 		else
+		{
 			succes = true;
+			_was_error = false;
+		}
 	}
 
 	return in;
@@ -237,7 +259,7 @@ T FIO::input(std::string prompt, bool wait)
 template<typename T>
 void FIO::output(T val, std::string end)
 {
-	this->out << val << end;
+	this->_out << val << end;
 }
 
 template <typename T>

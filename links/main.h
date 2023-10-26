@@ -286,14 +286,20 @@ private:
 	int size;
 
 public:
-	int getsize()
-	{
-		return this->size;
-	}
-
 	bitarray(int size){
 		this->size = size;
 		arr = new unsigned char[size / 8];
+		for (size_t i = 0; i < (size / 8); i++)
+			arr[i] = '\0';
+	}
+
+	~bitarray() {
+		delete[] arr;
+	}
+
+	int getsize()
+	{
+		return this->size;
 	}
 
 	void setbit(int index)
@@ -308,7 +314,7 @@ public:
 
 	bool operator[](int index)
 	{
-		return (arr[(size - index - 1) / 8] & 0b1 << (index % 8)) == (0b1 << (index % 8));
+		return (arr[((size - index - 1) / 8)] & 0b1 << (index % 8)) == (0b1 << (index % 8));
 	}
 };
 
@@ -335,17 +341,23 @@ void bitwise_two()
 void bitwise_three()
 {
 	FIO fio("bita", "bitb");
-	int size = fio.input<int>();
-	bitarray array(size);
-	for (size_t i = 0; i < size; i++)
-	{
-		array.setbit(fio.input<int>());
-	}
-	for (size_t i = 0; i < size; i++)
-	{
-		if (array[i])
-			fio.output(i);
-	}
+	int var;
+	bitarray array(10000000);
+	measure(
+		for (;!fio.is_end();)
+		{
+			var = fio.input<int>();
+			if (!fio.was_error())
+				array.setbit(var);
+			fio.clear_error();
+		}
+		for (size_t i = 0; i < array.getsize(); i++)
+		{
+			if (array[i])
+				fio.output(i);
+		}
+		,"Elapsed time: "
+	)
 }
 
 int bitwise_operations()
