@@ -169,7 +169,6 @@ void IO::foutput(T val, std::ofstream& ofs, std::string end)
 	ofs << val << end;
 }
 
-
 class FIO
 {
 private:

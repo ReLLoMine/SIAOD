@@ -4,5 +4,5 @@ extern IO io;
 
 int main()
 {
-	return bin_search();
+	return hash_table::run();
 }

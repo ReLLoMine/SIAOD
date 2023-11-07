@@ -3,6 +3,7 @@
 #include "lists.h"
 #include "structs.h"
 #include "recursion.h"
+#include "map.h"
 #include <set>
 #include <bitset>
 
@@ -241,475 +242,480 @@ int recursion()
 	return 0;
 }
 
-void bitwise_one()
-{
-	unsigned short int num = 0;
-	unsigned short int mask = 0;
-	unsigned short int bit_n = 0;
+namespace bitwise{
 
-	num = 0b10;
-	mask = 0b0000000010100000;
-	io.output("num = ", "");
-	io.output(std::bitset<16>(num).to_string());
-	io.output("mask = ", "");
-	io.output(std::bitset<16>(mask).to_string());
-	num |= mask;
-	io.output("bit res = ", "");
-	io.output(std::bitset<16>(num).to_string());
-	io.output("res = ", "");
-	io.output(num);
-
-	num = io.input<unsigned int>("2. Num: ");
-	mask = 0b1111100001111111;
-	io.output("num = ", "");
-	io.output(std::bitset<16>(num).to_string());
-	io.output("mask = ", "");
-	io.output(std::bitset<16>(mask).to_string());
-	num &= mask;
-	io.output("bit res = ", "");
-	io.output(std::bitset<16>(num).to_string());
-	io.output("res = ", "");
-	io.output(num);
-
-	num = io.input<unsigned int>("3. Num: ");
-	io.output("num = ", "");
-	io.output(std::bitset<16>(num).to_string());
-	num <<= 4;
-	io.output("bit res = ", "");
-	io.output(std::bitset<16>(num).to_string());
-	io.output("res = ", "");
-	io.output(num);
-
-	num = io.input<unsigned int>("4. Num: ");
-	io.output("num = ", "");
-	io.output(std::bitset<16>(num).to_string());
-	num >>= 4;
-	io.output("bit res = ", "");
-	io.output(std::bitset<16>(num).to_string());
-	io.output("res = ", "");
-	io.output(num);
-
-	num = io.input<unsigned int>("5. Num: ");
-	bit_n = io.input<unsigned int>("Bit's N: ");
-	io.output("num = ", "");
-	io.output(std::bitset<16>(num).to_string());
-	mask = 0b1 << bit_n;
-	io.output("mask = ", "");
-	io.output(std::bitset<16>(mask).to_string());
-	num |= mask;
-	io.output("bit res = ", "");
-	io.output(std::bitset<16>(num).to_string());
-	io.output("res = ", "");
-	io.output(num);
-}
-
-class bitarray
-{
-private:
-	unsigned char *arr;
-	size_t size;
-	size_t bytes;
-
-public:
-	bitarray(size_t size){
-		this->size = size;
-		this->bytes = (size_t) std::ceil(size / 8.);
-		arr = new unsigned char[this->bytes];
-		for (size_t i = 0; i < this->bytes; i++)
-			arr[i] = '\0';
-	}
-
-	~bitarray() {
-		delete[] arr;
-	}
-
-	size_t getsize()
+	void bitwise_one()
 	{
-		return this->size;
+		unsigned short int num = 0;
+		unsigned short int mask = 0;
+		unsigned short int bit_n = 0;
+
+		num = 0b10;
+		mask = 0b0000000010100000;
+		io.output("num = ", "");
+		io.output(std::bitset<16>(num).to_string());
+		io.output("mask = ", "");
+		io.output(std::bitset<16>(mask).to_string());
+		num |= mask;
+		io.output("bit res = ", "");
+		io.output(std::bitset<16>(num).to_string());
+		io.output("res = ", "");
+		io.output(num);
+
+		num = io.input<unsigned int>("2. Num: ");
+		mask = 0b1111100001111111;
+		io.output("num = ", "");
+		io.output(std::bitset<16>(num).to_string());
+		io.output("mask = ", "");
+		io.output(std::bitset<16>(mask).to_string());
+		num &= mask;
+		io.output("bit res = ", "");
+		io.output(std::bitset<16>(num).to_string());
+		io.output("res = ", "");
+		io.output(num);
+
+		num = io.input<unsigned int>("3. Num: ");
+		io.output("num = ", "");
+		io.output(std::bitset<16>(num).to_string());
+		num <<= 4;
+		io.output("bit res = ", "");
+		io.output(std::bitset<16>(num).to_string());
+		io.output("res = ", "");
+		io.output(num);
+
+		num = io.input<unsigned int>("4. Num: ");
+		io.output("num = ", "");
+		io.output(std::bitset<16>(num).to_string());
+		num >>= 4;
+		io.output("bit res = ", "");
+		io.output(std::bitset<16>(num).to_string());
+		io.output("res = ", "");
+		io.output(num);
+
+		num = io.input<unsigned int>("5. Num: ");
+		bit_n = io.input<unsigned int>("Bit's N: ");
+		io.output("num = ", "");
+		io.output(std::bitset<16>(num).to_string());
+		mask = 0b1 << bit_n;
+		io.output("mask = ", "");
+		io.output(std::bitset<16>(mask).to_string());
+		num |= mask;
+		io.output("bit res = ", "");
+		io.output(std::bitset<16>(num).to_string());
+		io.output("res = ", "");
+		io.output(num);
 	}
 
-	size_t getbytes()
+	class bitarray
 	{
-		return this->bytes;
-	}
+	private:
+		unsigned char* arr;
+		size_t size;
+		size_t bytes;
 
-	void setbit(size_t index)
-	{
-		arr[(size_t) (index) / 8] |= 0b1 << (index % 8);
-	}
+	public:
+		bitarray(size_t size) {
+			this->size = size;
+			this->bytes = (size_t)std::ceil(size / 8.);
+			arr = new unsigned char[this->bytes];
+			for (size_t i = 0; i < this->bytes; i++)
+				arr[i] = '\0';
+		}
 
-	void resetbit(size_t index)
-	{
-		arr[(size_t) (index) / 8] &= ~(0b1 << (index % 8));
-	}
+		~bitarray() {
+			delete[] arr;
+		}
 
-	bool operator[](size_t index)
-	{
-		return (arr[(size_t) (index) / 8] & 0b1 << (index % 8)) == (0b1 << (index % 8));
-	}
-};
-
-void bitwise_two()
-{
-	size_t size = io.input<size_t>("Size (max 8): ");
-	unsigned char arr = '\0';
-	unsigned short int bit;
-
-	for (size_t i = 0; i < size; i++)
-	{
-		bit = io.input<unsigned short int>("# ");
-		arr |= 0b1 << bit;
-	}
-	io.output("Array: ", "");
-	for (size_t i = 0; i < 8; i++)
-	{
-		if ((arr & (0b1 << i)) == (0b1 << i))
+		size_t getsize()
 		{
-			io.output(i, " ");
+			return this->size;
+		}
+
+		size_t getbytes()
+		{
+			return this->bytes;
+		}
+
+		void setbit(size_t index)
+		{
+			arr[(size_t)(index) / 8] |= 0b1 << (index % 8);
+		}
+
+		void resetbit(size_t index)
+		{
+			arr[(size_t)(index) / 8] &= ~(0b1 << (index % 8));
+		}
+
+		bool operator[](size_t index)
+		{
+			return (arr[(size_t)(index) / 8] & 0b1 << (index % 8)) == (0b1 << (index % 8));
+		}
+	};
+
+	void bitwise_two()
+	{
+		size_t size = io.input<size_t>("Size (max 8): ");
+		unsigned char arr = '\0';
+		unsigned short int bit;
+
+		for (size_t i = 0; i < size; i++)
+		{
+			bit = io.input<unsigned short int>("# ");
+			arr |= 0b1 << bit;
+		}
+		io.output("Array: ", "");
+		for (size_t i = 0; i < 8; i++)
+		{
+			if ((arr & (0b1 << i)) == (0b1 << i))
+			{
+				io.output(i, " ");
+			}
+		}
+		io.output("");
+	}
+
+	void bitwise_two_point_one()
+	{
+		size_t size = io.input<size_t>("Size: ");
+		bitarray arr(size);
+		unsigned short int bit;
+
+		for (size_t i = 0; i < size; i++)
+		{
+			arr.setbit(io.input<unsigned short int>());
+		}
+		io.output("Array: ", "");
+		for (size_t i = 0; i < size; i++)
+		{
+			if (arr[i])
+			{
+				io.output(i, " ");
+			}
 		}
 	}
-	io.output("");
-}
 
-void bitwise_two_point_one()
-{
-	size_t size = io.input<size_t>("Size: ");
-	bitarray arr(size);
-	unsigned short int bit;
+	void bitwise_three()
+	{
+		FIO fio("", "bita");
 
-	for (size_t i = 0; i < size; i++)
-	{
-		arr.setbit(io.input<unsigned short int>());
-	}
-	io.output("Array: ", "");
-	for (size_t i = 0; i < size; i++)
-	{
-		if (arr[i])
+		srand(time(0));
+
+		size_t len = io.input<size_t>("Enter lenght: ");
+
+		for (size_t i = 0; i < len; i++)
 		{
-			io.output(i, " ");
+			fio.output((((rand() + rand()) << 16) + (rand() + rand())) % len);
 		}
-	}
-}
 
-void bitwise_three()
-{
-	FIO fio("", "bita");
-	
-	srand(time(0));
+		io.output("File is ready.");
 
-	size_t len = io.input<size_t>("Enter lenght: ");
+		fio.close();
 
-	for (size_t i = 0; i < len; i++)
-	{
-		fio.output((((rand() + rand()) << 16) + (rand() + rand())) % len);
-	}
+		fio.set_in("bita");
+		fio.set_out("bitb");
+		fio.open();
 
-	io.output("File is ready.");
-
-	fio.close();
-
-	fio.set_in("bita");
-	fio.set_out("bitb");
-	fio.open();
-
-	int var;
-	bitarray array(len);
-	measure(
-		for (; !fio.is_end();)
-		{
-			var = fio.input<int>();
-			if (!fio.was_error())
-				array.setbit(var);
-			fio.clear_error();
-		}
+		int var;
+		bitarray array(len);
+		measure(
+			for (; !fio.is_end();)
+			{
+				var = fio.input<int>();
+				if (!fio.was_error())
+					array.setbit(var);
+				fio.clear_error();
+			}
 		for (size_t i = 0; i < array.getsize(); i++)
 		{
 			if (array[i])
 				fio.output(i);
 		}, "Elapsed time: "
-		);
-	io.output("Size in RAM (KB): ", "");
-	io.output(array.getbytes() / 1024.);
-}
-
-int bitwise_operations()
-{	
-	char mode = io.input<char>("Choose: ");
-
-	switch (mode)
-	{
-	case '1':
-		bitwise_one();
-		break;
-	case '2':
-		bitwise_two();
-		bitwise_two_point_one();
-		break;
-	case '3':
-		bitwise_three();
-		break;
-	default:
-		break;
+			);
+		io.output("Size in RAM (KB): ", "");
+		io.output(array.getbytes() / 1024.);
 	}
 
-	io.input<int>();
-	return 0;
-}
-
-struct carDriver
-{
-	char license_number[15];
-	char car_brand[15];
-	char name[15];
-
-	carDriver()
+	int run()
 	{
-		for (size_t i = 0; i < 15; i++)
+		char mode = io.input<char>("Choose: ");
+
+		switch (mode)
 		{
-			license_number[i] = car_brand[i] = name[i] = 0;
+		case '1':
+			bitwise_one();
+			break;
+		case '2':
+			bitwise_two();
+			bitwise_two_point_one();
+			break;
+		case '3':
+			bitwise_three();
+			break;
+		default:
+			break;
 		}
-	}
-};
 
-int bin_search_one()
-{
-	FIO fio("data", "data");
-
-	if (!fio.is_open())
-	{
-		io.output("File not found.");
+		io.input<int>();
 		return 0;
 	}
-
-	FIO bin_fio("", "data.bin", "bin");
-
-	if (!bin_fio.is_outf_open())
-	{
-		io.output("Binary file not found.");
-		return 0;
-	}
-
-	size_t entries = io.input<size_t>("Enter amount of entries: ");
-	std::set<std::string> unique_entries;
-
-	srand(time(0));
-
-	for (size_t i = 0; i < entries; i++)
-	{
-		carDriver driver;
-		strcpy_s(driver.name, ("Driver_" + std::to_string(i)).c_str());
-		strcpy_s(driver.car_brand, ("Car_" + std::to_string(i)).c_str());
-		std::string license_number;
-
-		do
-		{
-			for (size_t j = 0; j < 6; j++)
-			{
-				int num = rand() % 36;
-				license_number += (char)(num < 10 ? num + '0' : num - 10 + 'A');
-			}
-		} while (unique_entries.count(license_number) > 0);
-
-		unique_entries.insert(license_number);
-
-		strcpy_s(driver.license_number, license_number.c_str());
-
-		fio.output(driver.license_number);
-		fio.output(driver.car_brand);
-		fio.output(driver.name);
-	}
-
-	io.output("File generated!");
-
-	for (size_t i = 0; i < entries; i++)
-	{
-		carDriver driver;
-		std::string data;
-
-		data = fio.input<std::string>();
-		strcpy_s(driver.license_number, data.c_str());
-
-		data = fio.input<std::string>();
-		strcpy_s(driver.car_brand, data.c_str());
-
-		data = fio.input<std::string>();
-		strcpy_s(driver.name, data.c_str());
-
-		bin_fio.write(reinterpret_cast<const char*>(&driver), sizeof(driver));
-	}
-
-	io.output("Binary file generated!");
-	io.output("Entry size: ", "");
-	io.output(sizeof(carDriver), " bytes\n");
-
-	fio.close();
-	bin_fio.close();
-
-	return 0;
 }
 
-/*
-Функция ЛинейныйПоиск(массив, цель):
-	Для каждого элемента в массиве с индексом i от 0 до длины массива - 1:
-		Если элемент[i] равен ключу:
-			Вернуть i (или сам элемент)
+namespace file_and_bin_search{
 
-	Вернуть -1 (или другое значение, чтобы указать, что элемент не найден)
-*/
-
-int bin_search_two()
-{
-	FIO bin_fio("data.bin", "", "bin");
-
-	if (!bin_fio.is_inf_open())
+	struct carDriver
 	{
-		io.output("File not found.");
-		return 0;
-	}
+		char license_number[15];
+		char car_brand[15];
+		char name[15];
 
-	carDriver driver;
-
-	bool was_found = false;
-	std::string license_number = io.input<std::string>("Enter license: ");
-
-	measure(
-		while (bin_fio.read(reinterpret_cast<char*>(&driver), sizeof(driver)))
+		carDriver()
 		{
-			if (driver.license_number == license_number)
+			for (size_t i = 0; i < 15; i++)
 			{
-				was_found = true;
-				break;
+				license_number[i] = car_brand[i] = name[i] = 0;
 			}
-		}, "Elapsed time: ");
-
-	if (was_found)
-	{
-		io.output("Entry found: ");
-		io.output("    License number: ", "");
-		io.output(driver.license_number);
-		io.output("    Car: ", ""); 
-		io.output(driver.car_brand);
-		io.output("    Driver name: ", "");
-		io.output(driver.name);
-	}
-	else
-		io.output("Entry wasn't found.");
-
-	bin_fio.close();
-	
-	return 0;
-}
-
-struct fileKey
-{
-	std::string key;
-	size_t offset;
-};
-
-/*
-Функция ФибоначчиПоиск(массив, цель):
-	n = ДлинаМассива(массив)
-	FnMinus2 = 0
-	FnMinus1 = 1
-	Fn = FnMinus1 + FnMinus2
-
-	Пока Fn < n:
-		FnMinus2 = FnMinus1
-		FnMinus1 = Fn
-		Fn = FnMinus1 + FnMinus2
-
-	offset = -1
-
-	Пока Fn > 1:
-		i = Минимум(offset + FnMinus2, n - 1)
-
-		Если массив[i] < цель:
-			Fn = FnMinus1
-			FnMinus1 = FnMinus2
-			FnMinus2 = Fn - FnMinus1
-			offset = i
-		Иначе Если массив[i] > цель:
-			Fn = FnMinus2
-			FnMinus1 = FnMinus1 - FnMinus2
-			FnMinus2 = Fn - FnMinus1
-		Иначе:
-			Вернуть i // Элемент найден
-	Если FnMinus1 == 1 И массив[offset + 1] == цель:
-		Вернуть offset + 1
-	Вернуть -1 // Элемент не найден
-*/
-
-int fib(const std::vector<fileKey>& arr, std::string key)
-{
-	int size = arr.size();
-
-	int n_prev_prev = 0;
-	int n_prev = 1;
-	int n = n_prev + n_prev_prev;
-	while (n < size)
-	{
-		n_prev_prev = n_prev;
-		n_prev = n;
-		n = n_prev + n_prev_prev;
-	}
-	int offset = -1;
-	while (n > 1)
-	{
-		int i = std::min(offset + n_prev_prev, size - 1);
-		if (arr[i].key < key)
-		{
-			n = n_prev;
-			n_prev = n_prev_prev;
-			n_prev_prev = n - n_prev;
-			offset = i;
 		}
-		else if (arr[i].key > key)
+	};
+
+	int bin_search_one()
+	{
+		FIO fio("data", "data");
+
+		if (!fio.is_open())
 		{
-			n = n_prev_prev;
-			n_prev = n_prev - n_prev_prev;
-			n_prev_prev = n - n_prev;
+			io.output("File not found.");
+			return 0;
+		}
+
+		FIO bin_fio("", "data.bin", "bin");
+
+		if (!bin_fio.is_outf_open())
+		{
+			io.output("Binary file not found.");
+			return 0;
+		}
+
+		size_t entries = io.input<size_t>("Enter amount of entries: ");
+		std::set<std::string> unique_entries;
+
+		srand(time(0));
+
+		for (size_t i = 0; i < entries; i++)
+		{
+			carDriver driver;
+			strcpy_s(driver.name, ("Driver_" + std::to_string(i)).c_str());
+			strcpy_s(driver.car_brand, ("Car_" + std::to_string(i)).c_str());
+			std::string license_number;
+
+			do
+			{
+				for (size_t j = 0; j < 6; j++)
+				{
+					int num = rand() % 36;
+					license_number += (char)(num < 10 ? num + '0' : num - 10 + 'A');
+				}
+			} while (unique_entries.count(license_number) > 0);
+
+			unique_entries.insert(license_number);
+
+			strcpy_s(driver.license_number, license_number.c_str());
+
+			fio.output(driver.license_number);
+			fio.output(driver.car_brand);
+			fio.output(driver.name);
+		}
+
+		io.output("File generated!");
+
+		for (size_t i = 0; i < entries; i++)
+		{
+			carDriver driver;
+			std::string data;
+
+			data = fio.input<std::string>();
+			strcpy_s(driver.license_number, data.c_str());
+
+			data = fio.input<std::string>();
+			strcpy_s(driver.car_brand, data.c_str());
+
+			data = fio.input<std::string>();
+			strcpy_s(driver.name, data.c_str());
+
+			bin_fio.write(reinterpret_cast<const char*>(&driver), sizeof(driver));
+		}
+
+		io.output("Binary file generated!");
+		io.output("Entry size: ", "");
+		io.output(sizeof(carDriver), " bytes\n");
+
+		fio.close();
+		bin_fio.close();
+
+		return 0;
+	}
+
+	/*
+	Функция ЛинейныйПоиск(массив, цель):
+		Для каждого элемента в массиве с индексом i от 0 до длины массива - 1:
+			Если элемент[i] равен ключу:
+				Вернуть i (или сам элемент)
+
+		Вернуть -1 (или другое значение, чтобы указать, что элемент не найден)
+	*/
+
+	int bin_search_two()
+	{
+		FIO bin_fio("data.bin", "", "bin");
+
+		if (!bin_fio.is_inf_open())
+		{
+			io.output("File not found.");
+			return 0;
+		}
+
+		carDriver driver;
+
+		bool was_found = false;
+		std::string license_number = io.input<std::string>("Enter license: ");
+
+		measure(
+			while (bin_fio.read(reinterpret_cast<char*>(&driver), sizeof(driver)))
+			{
+				if (driver.license_number == license_number)
+				{
+					was_found = true;
+					break;
+				}
+			}, "Elapsed time: ");
+
+		if (was_found)
+		{
+			io.output("Entry found: ");
+			io.output("    License number: ", "");
+			io.output(driver.license_number);
+			io.output("    Car: ", "");
+			io.output(driver.car_brand);
+			io.output("    Driver name: ", "");
+			io.output(driver.name);
 		}
 		else
+			io.output("Entry wasn't found.");
+
+		bin_fio.close();
+
+		return 0;
+	}
+
+	struct fileKey
+	{
+		std::string key;
+		size_t offset;
+	};
+
+	/*
+	Функция ФибоначчиПоиск(массив, цель):
+		n = ДлинаМассива(массив)
+		FnMinus2 = 0
+		FnMinus1 = 1
+		Fn = FnMinus1 + FnMinus2
+
+		Пока Fn < n:
+			FnMinus2 = FnMinus1
+			FnMinus1 = Fn
+			Fn = FnMinus1 + FnMinus2
+
+		offset = -1
+
+		Пока Fn > 1:
+			i = Минимум(offset + FnMinus2, n - 1)
+
+			Если массив[i] < цель:
+				Fn = FnMinus1
+				FnMinus1 = FnMinus2
+				FnMinus2 = Fn - FnMinus1
+				offset = i
+			Иначе Если массив[i] > цель:
+				Fn = FnMinus2
+				FnMinus1 = FnMinus1 - FnMinus2
+				FnMinus2 = Fn - FnMinus1
+			Иначе:
+				Вернуть i // Элемент найден
+		Если FnMinus1 == 1 И массив[offset + 1] == цель:
+			Вернуть offset + 1
+		Вернуть -1 // Элемент не найден
+	*/
+
+	int fib(const std::vector<fileKey>&arr, std::string key)
+	{
+		int size = arr.size();
+
+		int n_prev_prev = 0;
+		int n_prev = 1;
+		int n = n_prev + n_prev_prev;
+		while (n < size)
 		{
-			return arr[i].offset;
+			n_prev_prev = n_prev;
+			n_prev = n;
+			n = n_prev + n_prev_prev;
 		}
+		int offset = -1;
+		while (n > 1)
+		{
+			int i = std::min(offset + n_prev_prev, size - 1);
+			if (arr[i].key < key)
+			{
+				n = n_prev;
+				n_prev = n_prev_prev;
+				n_prev_prev = n - n_prev;
+				offset = i;
+			}
+			else if (arr[i].key > key)
+			{
+				n = n_prev_prev;
+				n_prev = n_prev - n_prev_prev;
+				n_prev_prev = n - n_prev;
+			}
+			else
+			{
+				return arr[i].offset;
+			}
+		}
+		if (n_prev == 1 && arr[offset + 1].key == key)
+		{
+			return arr[offset + 1].offset;
+		}
+		return -1;
 	}
-	if (n_prev == 1 && arr[offset + 1].key == key)
+
+	int bin_search_three()
 	{
-		return arr[offset + 1].offset;
-	}
-	return -1;
-}
+		FIO bin_fio("data.bin", "", "bin");
 
-int bin_search_three()
-{
-	FIO bin_fio("data.bin", "", "bin");
+		carDriver driver;
+		std::vector<fileKey> keyTable;
+		size_t offset = 0;
 
-	carDriver driver;
-	std::vector<fileKey> keyTable;
-	size_t offset = 0;
+		bool was_found = false;
 
-	bool was_found = false;
+		std::string license_number = io.input<std::string>("Enter license: ");
 
-	std::string license_number = io.input<std::string>("Enter license: ");
+		while (bin_fio.read(reinterpret_cast<char*>(&driver), sizeof(driver)))
+		{
+			fileKey key;
+			key.key = driver.license_number;
+			key.offset = offset;
+			keyTable.push_back(key);
+			offset++;
+		}
 
-	while (bin_fio.read(reinterpret_cast<char*>(&driver), sizeof(driver)))
-	{
-		fileKey key;
-		key.key = driver.license_number;
-		key.offset = offset;
-		keyTable.push_back(key);
-		offset++;
-	}
+		std::sort(keyTable.begin(), keyTable.end(), [](const fileKey& a, const fileKey& b) {return a.key < b.key; });
 
-	std::sort(keyTable.begin(), keyTable.end(), [](const fileKey& a, const fileKey& b) {return a.key < b.key; });
+		io.output("Table is ready");
 
-	io.output("Table is ready");
+		bin_fio.close();
 
-	bin_fio.close();
-
-	measure(
-		offset = fib(keyTable, license_number);
+		measure(
+			offset = fib(keyTable, license_number);
 
 		if (offset != -1)
 			was_found = true;
@@ -720,44 +726,97 @@ int bin_search_three()
 			bin_fio.move(offset * sizeof(carDriver));
 			bin_fio.read(reinterpret_cast<char*>(&driver), sizeof(driver));
 		},
-		"Elapsed time: ");
+			"Elapsed time: ");
 
-	if (was_found)
-	{
-		io.output("Entry found: ");
-		io.output("    License number: ", "");
-		io.output(driver.license_number);
-		io.output("    Car: ", "");
-		io.output(driver.car_brand);
-		io.output("    Driver name: ", "");
-		io.output(driver.name);
+		if (was_found)
+		{
+			io.output("Entry found: ");
+			io.output("    License number: ", "");
+			io.output(driver.license_number);
+			io.output("    Car: ", "");
+			io.output(driver.car_brand);
+			io.output("    Driver name: ", "");
+			io.output(driver.name);
+		}
+		else
+			io.output("Entry wasn't found.");
+
+		bin_fio.close();
+
+		return 0;
 	}
-	else
-		io.output("Entry wasn't found.");
 
-	bin_fio.close();
+	int run()
+	{
+		char mode = io.input<char>("Choose: ");
 
-	return 0;
+		switch (mode)
+		{
+		case '1':
+			bin_search_one();
+			break;
+		case '2':
+			bin_search_two();
+			break;
+		case '3':
+			bin_search_three();
+			break;
+		default:
+			break;
+		}
+
+		return 0;
+	}
 }
 
-int bin_search()
+namespace hash_table
 {
-	char mode = io.input<char>("Choose: ");
-
-	switch (mode)
+	struct goodSales
 	{
-	case '1':
-		bin_search_one();
-		break;
-	case '2':
-		bin_search_two();
-		break;
-	case '3':
-		bin_search_three();
-		break;
-	default:
-		break;
-	}
+		char id[10];
+		char name[15];
+		size_t price;
+		char sale_date[11];
+	};
 
-	return 0;
+	int run()
+	{
+		time_t s = time(0);
+		srand(s);
+
+		map<goodSales> data;
+		std::set<std::string> ids;
+
+		goodSales entry;
+
+		for (size_t i = 0; i < 1000; i++)
+		{
+			strcpy_s(entry.name, ("Good_" + std::to_string(i)).c_str());
+			strcpy_s(entry.sale_date, "11.09.2001");
+			entry.price = rand();
+			std::string id;
+
+			do
+			{
+				for (size_t j = 0; j < 6; j++)
+				{
+					int num = rand() % 36;
+					id += (char)(num < 10 ? num + '0' : num - 10 + 'A');
+				}
+			} while (ids.count(id) > 0);
+
+			ids.insert(id);
+			strcpy_s(entry.id, id.c_str());
+
+			data.insert(entry.id, entry);
+		}
+
+		for (auto key : ids)
+		{
+			io.output(data[key].name);
+			data.remove(key);
+		}
+
+		return 0;
+	}
 }

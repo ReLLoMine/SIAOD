@@ -130,6 +130,7 @@
   <ItemGroup>
     <ClCompile Include="lists.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="map.cpp" />
     <ClCompile Include="misc.cpp" />
     <ClCompile Include="recursion.cpp" />
     <ClCompile Include="sorts.cpp" />
@@ -140,6 +141,7 @@
     <ClInclude Include="date.h" />
     <ClInclude Include="lists.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="map.h" />
     <ClInclude Include="matrix.h" />
     <ClInclude Include="misc.h" />
     <ClInclude Include="recursion.h" />
