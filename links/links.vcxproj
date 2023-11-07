@@ -140,6 +140,7 @@
     <ClInclude Include="date.h" />
     <ClInclude Include="lists.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="matrix.h" />
     <ClInclude Include="misc.h" />
     <ClInclude Include="recursion.h" />
     <ClInclude Include="sorts.h" />
