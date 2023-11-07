@@ -242,41 +242,64 @@ int recursion()
 
 void bitwise_one()
 {
-	unsigned int num = 0;
-	unsigned int mask = 0;
-	unsigned int bit_n = 0;
+	unsigned short int num = 0;
+	unsigned short int mask = 0;
+	unsigned short int bit_n = 0;
 
-	num = 0b0;
-	mask = 0b101 << 5;
+	num = 0b10;
+	mask = 0b0000000010100000;
+	io.output("num = ", "");
+	io.output(std::bitset<16>(num).to_string());
+	io.output("mask = ", "");
+	io.output(std::bitset<16>(mask).to_string());
 	num |= mask;
-	io.output("Res: ", "");
-	io.output(std::bitset<32>(num).to_string());
+	io.output("bit res = ", "");
+	io.output(std::bitset<16>(num).to_string());
+	io.output("res = ", "");
+	io.output(num);
 
 	num = io.input<unsigned int>("2. Num: ");
-	mask = ~(0b1111 << 7);
+	mask = 0b1111100001111111;
+	io.output("num = ", "");
+	io.output(std::bitset<16>(num).to_string());
+	io.output("mask = ", "");
+	io.output(std::bitset<16>(mask).to_string());
 	num &= mask;
-	io.output("Res: ", "");
-	io.output(std::bitset<32>(num).to_string());
+	io.output("bit res = ", "");
+	io.output(std::bitset<16>(num).to_string());
+	io.output("res = ", "");
+	io.output(num);
 
 	num = io.input<unsigned int>("3. Num: ");
-	num <<= 3;
-	num &= mask;
-	io.output("Res: ", "");
-	io.output(std::bitset<32>(num).to_string());
+	io.output("num = ", "");
+	io.output(std::bitset<16>(num).to_string());
+	num <<= 4;
+	io.output("bit res = ", "");
+	io.output(std::bitset<16>(num).to_string());
+	io.output("res = ", "");
+	io.output(num);
 
 	num = io.input<unsigned int>("4. Num: ");
+	io.output("num = ", "");
+	io.output(std::bitset<16>(num).to_string());
 	num >>= 4;
-	num &= mask;
-	io.output("Res: ", "");
-	io.output(std::bitset<32>(num).to_string());
+	io.output("bit res = ", "");
+	io.output(std::bitset<16>(num).to_string());
+	io.output("res = ", "");
+	io.output(num);
 
 	num = io.input<unsigned int>("5. Num: ");
-	bit_n = io.input<unsigned int>("5. Bit's N: ");
+	bit_n = io.input<unsigned int>("Bit's N: ");
+	io.output("num = ", "");
+	io.output(std::bitset<16>(num).to_string());
 	mask = 0b1 << bit_n;
-	num &= mask;
-	io.output("Res: ", "");
-	io.output(std::bitset<32>(num).to_string());
-
+	io.output("mask = ", "");
+	io.output(std::bitset<16>(mask).to_string());
+	num |= mask;
+	io.output("bit res = ", "");
+	io.output(std::bitset<16>(num).to_string());
+	io.output("res = ", "");
+	io.output(num);
 }
 
 class bitarray
@@ -288,8 +311,8 @@ private:
 public:
 	bitarray(int size){
 		this->size = size;
-		arr = new unsigned char[size / 8];
-		for (size_t i = 0; i < (size / 8); i++)
+		arr = new unsigned char[(int) std::ceil(size / 8.)];
+		for (size_t i = 0; i < (int) std::ceil(size / 8.); i++)
 			arr[i] = '\0';
 	}
 
@@ -304,32 +327,54 @@ public:
 
 	void setbit(int index)
 	{
-		arr[((size - index - 1) / 8)] |= 0b1 << (index % 8);
+		arr[(int) std::ceil((size - index - 1) / 8.)] |= 0b1 << (index % 8);
 	}
 
 	void resetbit(int index)
 	{
-		arr[((size - index - 1) / 8)] &= ~(0b1 << (index % 8));
+		arr[(int) std::ceil((size - index - 1) / 8.)] &= ~(0b1 << (index % 8));
 	}
 
 	bool operator[](int index)
 	{
-		return (arr[((size - index - 1) / 8)] & 0b1 << (index % 8)) == (0b1 << (index % 8));
+		return (arr[(int) std::ceil((size - index - 1) / 8.)] & 0b1 << (index % 8)) == (0b1 << (index % 8));
 	}
 };
 
 void bitwise_two()
 {
-	bitarray arr(64);
-	
-	int val = 0;
+	size_t size = io.input<size_t>("Size: ");
+	unsigned char arr = '\0';
+	unsigned short int bit;
 
-	for (size_t i = 0; i < 64; i++)
+	for (size_t i = 0; i < size; i++)
 	{
-		arr.setbit(io.input<int>("# "));
+		bit = io.input<unsigned short int>("# ");
+		arr |= 0b1 << bit;
 	}
 	io.output("Array: ", "");
-	for (size_t i = 0; i < 64; i++)	
+	for (size_t i = 0; i < 8; i++)
+	{
+		if ((arr & (0b1 << i)) == (0b1 << i))
+		{
+			io.output(i, " ");
+		}
+	}
+	io.output("");
+}
+
+void bitwise_two_point_one()
+{
+	size_t size = io.input<size_t>("Size: ");
+	bitarray arr(size);
+	unsigned short int bit;
+
+	for (size_t i = 0; i < size; i++)
+	{
+		arr.setbit(io.input<unsigned short int>("# "));
+	}
+	io.output("Array: ", "");
+	for (size_t i = 0; i < size; i++)
 	{
 		if (arr[i])
 		{
@@ -371,6 +416,109 @@ int bitwise_operations()
 		break;
 	case '2':
 		bitwise_two();
+		bitwise_two_point_one();
+		break;
+	case '3':
+		bitwise_three();
+		break;
+	default:
+		break;
+	}
+
+	io.input<int>();
+	return 0;
+}
+
+struct carDriver
+{
+	char license_number[15];
+	char car_brand[15];
+	char name[15];
+
+	carDriver()
+	{
+		for (size_t i = 0; i < 15; i++)
+		{
+			license_number[i] = car_brand[i] = name[i] = 0;
+		}
+	}
+};
+
+int bin_search_one()
+{
+	FIO fio("out", "out");
+	FIO bin_fio("in.bin", "out.bin", "bin");
+
+	size_t entries = 100;
+
+	srand(time(0));
+
+	for (size_t i = 0; i < entries; i++)
+	{
+		carDriver driver;
+		strcpy_s(driver.name, ("driver_" + std::to_string(i)).c_str());
+		strcpy_s(driver.car_brand, ("car_" + std::to_string(i)).c_str());
+		std::string license_number;
+		for (size_t j = 0; j < 6; j++)
+		{
+			int num = rand() % 36;
+			license_number += (char)(num < 10 ? num + '0' : num - 10 + 'A');
+		}
+		strcpy_s(driver.license_number, license_number.c_str());
+
+		fio.output(driver.name);
+		fio.output(driver.license_number);
+		fio.output(driver.car_brand);
+	}
+
+	io.output("File generated!");
+
+	//for (size_t i = 0; i < entries; i++)
+	//{
+	//	carDriver driver;
+	//	bin_fio.read(reinterpret_cast<char*>(&driver), sizeof(driver));
+	//	fio.output(driver.name);
+	//	fio.output(driver.license_number);
+	//	fio.output(driver.car_brand);
+	//}
+
+	for (size_t i = 0; i < entries; i++)
+	{
+		carDriver driver;
+		std::string data;
+
+		data = fio.input<std::string>();
+		for (size_t i = 0; i < data.size(); i++)
+			driver.name[i] = data[i];
+
+		data = fio.input<std::string>();
+		for (size_t i = 0; i < data.size(); i++)
+			driver.license_number[i] = data[i];
+
+		data = fio.input<std::string>();
+		for (size_t i = 0; i < data.size(); i++)
+			driver.car_brand[i] = data[i];
+
+		bin_fio.write(reinterpret_cast<const char*>(&driver), sizeof(driver));
+	}
+
+	io.output("Binary file generated!");
+
+	return 0;
+}
+
+int bin_search()
+{
+	char mode = io.input<char>("Choose: ");
+
+	switch (mode)
+	{
+	case '1':
+		bin_search_one();
+		break;
+	case '2':
+		bitwise_two();
+		bitwise_two_point_one();
 		break;
 	case '3':
 		bitwise_three();

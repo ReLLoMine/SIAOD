@@ -4,5 +4,5 @@ extern IO io;
 
 int main()
 {
-	return bitwise_operations();
+	return bin_search();
 }

@@ -172,14 +172,25 @@ class FIO
 private:
 	std::ifstream _in;
 	std::ofstream _out;
+	std::string _in_path;
+	std::string _out_path;
+	std::string _mode;
 	bool _was_error = false;
 	bool _send_err = false;
 public:
 
-	FIO(std::string in, std::string out)
+	FIO(std::string in, std::string out, std::string mode="")
 	{
-		this->_in.open(in);
-		this->_out.open(out);
+		this->_mode = mode;
+		this->_in_path = in;
+		this->_out_path = out;
+
+		this->open();
+	}
+
+	~FIO()
+	{
+		this->close();
 	}
 
 	std::string getline(std::string prompt = "")
@@ -201,6 +212,53 @@ public:
 				break;
 		}
 		return res;
+	}
+
+	void set_in(std::string in)
+	{
+		this->_in_path = in;
+	}
+
+	void set_out(std::string out)
+	{
+		this->_out_path = out;
+	}
+
+	void write(const char* data, unsigned long long size)
+	{
+		_out.write(data, size);
+	}
+
+	void read(char* data, unsigned long long size)
+	{
+		_in.read(data, size);
+	}
+
+	bool is_open()
+	{
+		return _in.is_open() and _out.is_open();
+	}
+
+	bool open()
+	{
+		if (this->_mode == "bin")
+		{
+			this->_in.open(this->_in_path, std::ios::binary);
+			this->_out.open(this->_out_path, std::ios::binary);
+		}
+		else
+		{
+			this->_in.open(this->_in_path);
+			this->_out.open(this->_out_path);
+		}
+
+		return this->is_open();
+	}
+
+	void close()
+	{
+		_in.close();
+		_out.close();
 	}
 
 	bool was_error()
@@ -259,7 +317,7 @@ T FIO::input(std::string prompt, bool wait)
 template<typename T>
 void FIO::output(T val, std::string end)
 {
-	this->_out << val << end;
+	this->_out << val << end << std::flush;
 }
 
 template <typename T>
