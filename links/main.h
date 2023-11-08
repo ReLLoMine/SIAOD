@@ -4,6 +4,7 @@
 #include "structs.h"
 #include "recursion.h"
 #include "map.h"
+#include "exp_tree.h"
 #include <set>
 #include <bitset>
 
@@ -931,6 +932,22 @@ namespace hash_table
 			break;
 		}
 
+		return 0;
+	}
+}
+
+namespace expess_tree
+{
+	int run()
+	{
+		io.output("Enter expression and form: ", "");
+		std::string expression = io.input<std::string>();
+		std::string form = io.input<std::string>();
+		exp_tree tree(expression, form);
+		io.output("Result: ", "");
+		io.output(tree.calc());
+		io.output("Prefix form: ", "");
+		io.output(tree.get_prefix_form());
 		return 0;
 	}
 }

@@ -4,5 +4,5 @@ extern IO io;
 
 int main()
 {
-	return hash_table::run();
+	return expess_tree::run();
 }
