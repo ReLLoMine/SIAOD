@@ -773,23 +773,31 @@ namespace hash_table
 {
 	struct goodSales
 	{
-		char id[10];
-		char name[15];
+		char id[10] = { 0 };
+		char name[15] = { 0 };
 		size_t price;
-		char sale_date[11];
+		char sale_date[11] = { 0 };
 	};
 
-	int run()
+	struct fileKey
 	{
+		char id[10] = { 0 };
+		size_t offset;
+	};
+
+	int hash_table_two()
+	{
+		FIO bin_fio("", "hash_data.bin", "bin");
 		time_t s = time(0);
 		srand(s);
 
-		map<goodSales> data;
+		map<fileKey> data;
 		std::set<std::string> ids;
-
 		goodSales entry;
 
-		for (size_t i = 0; i < 1000; i++)
+		size_t size = io.input<int>("Enter amount: ");
+
+		for (size_t i = 0; i < size; i++)
 		{
 			strcpy_s(entry.name, ("Good_" + std::to_string(i)).c_str());
 			strcpy_s(entry.sale_date, "11.09.2001");
@@ -798,6 +806,7 @@ namespace hash_table
 
 			do
 			{
+				id = "";
 				for (size_t j = 0; j < 6; j++)
 				{
 					int num = rand() % 36;
@@ -805,16 +814,121 @@ namespace hash_table
 				}
 			} while (ids.count(id) > 0);
 
-			ids.insert(id);
 			strcpy_s(entry.id, id.c_str());
 
-			data.insert(entry.id, entry);
+			bin_fio.write(reinterpret_cast<const char*>(&entry), sizeof(entry));
+
+			ids.insert(id);
 		}
 
-		for (auto key : ids)
+		io.output("Bin file is ready.");
+
+		bin_fio.close_outf();
+		bin_fio.set_out("");
+		bin_fio.set_in("hash_data.bin");
+		bin_fio.open_inf();
+
+		size_t offset = 0;
+		fileKey entry_pair;
+
+		while (bin_fio.read(reinterpret_cast<char*>(&entry), sizeof(entry)))
 		{
-			io.output(data[key].name);
-			data.remove(key);
+			entry_pair.offset = offset++;
+			strcpy_s(entry_pair.id, entry.id);
+			data.insert(entry_pair.id, entry_pair);
+		}
+
+		io.output("Table is ready.");
+
+		bin_fio.close_inf();
+		bin_fio.open_inf();
+
+		measure(
+			for (auto key : ids)
+			{
+				bin_fio.move(data[key].offset * sizeof(entry));
+				bin_fio.read(reinterpret_cast<char*>(&entry), sizeof(entry));
+				io.output(entry.id);
+				io.output(entry.name);
+				break;
+			}, "Entry found in bin file.\nElapsed time: "
+				);
+
+
+		bin_fio.close();
+
+		return 0;
+	}
+
+	int hash_table_one()
+	{
+		time_t s = time(0);
+		srand(s);
+
+		map<goodSales> data;
+		std::set<std::string> ids;
+
+		std::vector<goodSales> entries;
+
+		size_t size = io.input<int>("Enter amount: ");
+
+		goodSales entry;
+
+		for (size_t i = 0; i < size; i++)
+		{
+			strcpy_s(entry.name, ("Good_" + std::to_string(i)).c_str());
+			strcpy_s(entry.sale_date, "11.09.2001");
+			entry.price = rand();
+			std::string id;
+
+			do
+			{
+				id = "";
+				for (size_t j = 0; j < 6; j++)
+				{
+					int num = rand() % 36;
+					id += (char)(num < 10 ? num + '0' : num - 10 + 'A');
+				}
+			} while (ids.count(id) > 0);
+
+			strcpy_s(entry.id, id.c_str());
+
+			entries.push_back(entry);
+
+			ids.insert(id);
+
+		}
+
+		measure(
+			for (auto& val : entries)
+				data.insert(val.id, val);
+		, "Table is ready.\nElapsed time: ");
+
+		measure(
+			for (auto key : ids)
+			{
+				io.output(data[key].name);
+				data.remove(key);
+				break;
+			}, "Element is found.\nElapsed time: ");
+
+		return 0;
+	}
+
+	int run()
+	{
+		char mode = io.input<char>("Choose: ");
+
+		switch (mode)
+		{
+		case '1':
+			hash_table_one();
+			break;
+		case '2':
+			hash_table_two();
+			break;
+		default:
+			break;
 		}
 
 		return 0;
