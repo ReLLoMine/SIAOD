@@ -128,6 +128,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="bin_trees.cpp" />
     <ClCompile Include="exp_tree.cpp" />
     <ClCompile Include="lists.cpp" />
     <ClCompile Include="main.cpp" />
@@ -139,6 +140,7 @@
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bin_trees.h" />
     <ClInclude Include="date.h" />
     <ClInclude Include="exp_tree.h" />
     <ClInclude Include="lists.h" />

@@ -5,6 +5,7 @@
 #include "recursion.h"
 #include "map.h"
 #include "exp_tree.h"
+#include "bin_trees.h"
 #include <set>
 #include <bitset>
 
@@ -786,6 +787,61 @@ namespace hash_table
 		size_t offset;
 	};
 
+	int hash_table_one()
+	{
+		time_t s = time(0);
+		srand(s);
+
+		map<goodSales> data;
+		std::set<std::string> ids;
+
+		std::vector<goodSales> entries;
+
+		size_t size = io.input<int>("Enter amount: ");
+
+		goodSales entry;
+
+		for (size_t i = 0; i < size; i++)
+		{
+			strcpy_s(entry.name, ("Good_" + std::to_string(i)).c_str());
+			strcpy_s(entry.sale_date, "11.09.2001");
+			entry.price = rand();
+			std::string id;
+
+			do
+			{
+				id = "";
+				for (size_t j = 0; j < 6; j++)
+				{
+					int num = rand() % 36;
+					id += (char)(num < 10 ? num + '0' : num - 10 + 'A');
+				}
+			} while (ids.count(id) > 0);
+
+			strcpy_s(entry.id, id.c_str());
+
+			entries.push_back(entry);
+
+			ids.insert(id);
+
+		}
+
+		measure(
+			for (auto& val : entries)
+				data.insert(val.id, val);
+		, "Table is ready.\nElapsed time: ");
+
+		measure(
+			for (auto key : ids)
+			{
+				io.output(data[key].name);
+				data.remove(key);
+				break;
+			}, "Element is found.\nElapsed time: ");
+
+		return 0;
+	}
+
 	int hash_table_two()
 	{
 		FIO bin_fio("", "hash_data.bin", "bin");
@@ -861,61 +917,6 @@ namespace hash_table
 		return 0;
 	}
 
-	int hash_table_one()
-	{
-		time_t s = time(0);
-		srand(s);
-
-		map<goodSales> data;
-		std::set<std::string> ids;
-
-		std::vector<goodSales> entries;
-
-		size_t size = io.input<int>("Enter amount: ");
-
-		goodSales entry;
-
-		for (size_t i = 0; i < size; i++)
-		{
-			strcpy_s(entry.name, ("Good_" + std::to_string(i)).c_str());
-			strcpy_s(entry.sale_date, "11.09.2001");
-			entry.price = rand();
-			std::string id;
-
-			do
-			{
-				id = "";
-				for (size_t j = 0; j < 6; j++)
-				{
-					int num = rand() % 36;
-					id += (char)(num < 10 ? num + '0' : num - 10 + 'A');
-				}
-			} while (ids.count(id) > 0);
-
-			strcpy_s(entry.id, id.c_str());
-
-			entries.push_back(entry);
-
-			ids.insert(id);
-
-		}
-
-		measure(
-			for (auto& val : entries)
-				data.insert(val.id, val);
-		, "Table is ready.\nElapsed time: ");
-
-		measure(
-			for (auto key : ids)
-			{
-				io.output(data[key].name);
-				data.remove(key);
-				break;
-			}, "Element is found.\nElapsed time: ");
-
-		return 0;
-	}
-
 	int run()
 	{
 		char mode = io.input<char>("Choose: ");
@@ -948,6 +949,64 @@ namespace expess_tree
 		io.output(tree.calc());
 		io.output("Prefix form: ", "");
 		io.output(tree.get_prefix_form());
+		return 0;
+	}
+}
+
+namespace binary_trees
+{
+	struct goodSales
+	{
+		char id[10] = { 0 };
+		char name[15] = { 0 };
+		size_t price;
+		char sale_date[11] = { 0 };
+	};
+
+	class fileKey
+	{
+	public:
+		char id[10] = { 0 };
+		size_t offset = 0;
+
+		fileKey() {}
+
+		fileKey(const char* id, size_t offset)
+		{
+			strcpy_s(this->id, id);
+			this->offset = offset;
+		}
+
+		bool operator<(const fileKey& other)
+		{
+			return std::string(this->id) < std::string(other.id);
+		}
+
+		bool operator>(const fileKey& other)
+		{
+			return std::string(this->id) > std::string(other.id);
+		}
+
+		std::string to_string()
+		{
+			return std::string(this->id);
+		}
+	};
+
+
+	int run()
+	{
+		bin_search_tree<fileKey> tree;
+
+		tree.insert("ABCDED", fileKey("ABCDED", 9));
+		tree.insert("DABCEJ", fileKey("DABCEJ", 4));
+		tree.insert("DEABCK", fileKey("DEABCK", 32123));
+		tree.insert("CABDER", fileKey("CABDER", 123));
+		tree.insert("CDABES", fileKey("CDABES", 16));
+
+		tree.remove("CABDER");
+
+		io.output(tree["CABDER"].offset);
 		return 0;
 	}
 }

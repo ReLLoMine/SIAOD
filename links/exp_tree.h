@@ -2,23 +2,23 @@
 
 #include "misc.h"
 
-struct node
-{
-	char val;
-	node* left;
-	node* right;
-
-	node(char userData)
-	{
-		this->val = userData;
-		this->left = nullptr;
-		this->right = nullptr;
-	}
-};
-
 class exp_tree
 {
 private:
+	struct node
+	{
+		char val;
+		node* left;
+		node* right;
+
+		node(char userData)
+		{
+			this->val = userData;
+			this->left = nullptr;
+			this->right = nullptr;
+		}
+	};
+
 	node *root;
 
 	int _recurr_calc(node* root)
