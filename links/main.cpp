@@ -4,5 +4,5 @@ extern IO io;
 
 int main()
 {
-	return expess_tree::run();
+	return binary_trees::run();
 }
