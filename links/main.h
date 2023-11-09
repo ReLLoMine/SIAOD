@@ -287,7 +287,7 @@ namespace bitwise{
 		num = io.input<unsigned int>("4. Num: ");
 		io.output("num = ", "");
 		io.output(std::bitset<16>(num).to_string());
-		num >>= 4;
+		num >>= 3;
 		io.output("bit res = ", "");
 		io.output(std::bitset<16>(num).to_string());
 		io.output("res = ", "");
