@@ -106,4 +106,3 @@ public:
 		return this->_recurr_calc(this->root);
 	}
 };
-
