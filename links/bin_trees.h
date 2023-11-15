@@ -23,7 +23,7 @@ private:
 
 	node* root;
 
-	void _insert(node *root, std::string key, T val)
+	void _insert(node* root, std::string key, T val)
 	{
 		node* tmp;
 
@@ -43,18 +43,37 @@ private:
 		}
 	}
 
-	node* _find(node *root, std::string key)
+	void _find_inorder_successor(node* root, node*& successor, node*& _ancestor, node* ancestor, std::string key)
 	{
-		if (!root)
-			return new node("\0", T());
-		if (key == root->key)
+		if (root->left)
+			this->_find_inorder_successor(root->left, successor, _ancestor, root, key);
+		if (root->key > key and root->key < successor->key or successor->key <= key)
+		{
+			successor = root;
+			_ancestor = ancestor;
+		}
+		if (root->right)
+			this->_find_inorder_successor(root->right, successor, _ancestor, root, key);
+	}
+
+	node* _find_inorder_successor(std::string key, node*& ancestor)
+	{
+		node* successor = this->root;
+		this->_find_inorder_successor(this->root, successor, ancestor, nullptr, key);
+		return successor;
+	}
+
+	node* _find(node* root, std::string key)
+	{
+		if (not root)
+			return nullptr;
+		if (root->key == key)
 			return root;
 		if (root->key > key)
 			return _find(root->left, key);
 		if (root->key < key)
 			return _find(root->right, key);
-		return new node("\0", T());
-
+		return nullptr;
 	}
 
 	void _max_depth(node* root, size_t *max_depth, size_t depth=0)
@@ -101,6 +120,22 @@ private:
 		return data;
 	}
 
+	void _get_all_nodes(node* root, std::vector<node*>& all_nodes)
+	{
+		if (root->left)
+			this->_get_all_nodes(root->left, all_nodes);
+		all_nodes.push_back(root);
+		if (root->right)
+			this->_get_all_nodes(root->right, all_nodes);
+	}
+
+	std::vector<node*> _get_all_nodes()
+	{
+		std::vector <node*> all_nodes;
+		this->_get_all_nodes(this->root, all_nodes);
+		return all_nodes;
+	}
+
 public:
 	bin_search_tree()
 	{
@@ -122,9 +157,44 @@ public:
 
 	void remove(std::string key)
 	{
-		node* tmp = this->_find(this->root, key);
-		tmp->key = "\0";
-		tmp->val = T();
+		node* pos = this->_find(this->root, key);
+		node* parent = nullptr;
+		node* prev_parent = nullptr;
+		node* successor = nullptr;
+
+		while (pos->left or pos->right)
+		{
+			successor = this->_find_inorder_successor(pos->key, parent);
+
+			if (pos == successor)
+				break;
+			else
+			{
+				std::swap(pos->key, successor->key);
+				std::swap(pos->val, successor->val);
+				prev_parent = parent;
+				pos = successor;
+			}
+		}
+		parent = prev_parent;
+		if (pos == successor)
+		{
+			if (not (pos->left and pos->left) or (pos->left or pos->left))
+			{
+				if (parent->left->key == pos->key)
+					parent->left = pos->left;
+				else if (parent->right->key == pos->key)
+					parent->right = pos->right;
+			}
+		}
+
+		if(parent)
+			if (parent->left->key == pos->key)
+				parent->left = nullptr;
+			else if (parent->right->key == pos->key)
+				parent->right = nullptr;
+
+		delete pos;
 	}
 
 	T& operator[](std::string key)
@@ -155,5 +225,22 @@ public:
 			str += '\n';
 		}
 		return str;
+	}
+
+	std::string get_graphviz()
+	{
+		std::vector<node*> nodes;
+		this->_get_all_nodes(this->root, nodes);
+		std::string str = "digraph Tree {\n";
+
+		for (node* &node : nodes)
+		{
+			if (node->left)
+				str += '\"' + node->key + '\"' + " -> " + '\"' + node->left->key + "\"\n";
+
+			if (node->right)
+				str += '\"' + node->key + '\"' + " -> " + '\"' + node->right->key + "\"\n";
+		}
+		return str + "}";
 	}
 };

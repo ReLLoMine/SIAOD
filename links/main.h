@@ -998,15 +998,25 @@ namespace binary_trees
 	{
 		bin_search_tree<fileKey> tree;
 
-		tree.insert("ABCDED", fileKey("ABCDED", 9));
-		tree.insert("DABCEJ", fileKey("DABCEJ", 4));
-		tree.insert("DEABCK", fileKey("DEABCK", 32123));
-		tree.insert("CABDER", fileKey("CABDER", 123));
-		tree.insert("CDABES", fileKey("CDABES", 16));
+		tree.insert("13", fileKey("13", 9));
+		tree.insert("12", fileKey("12", 4));
+		tree.insert("19", fileKey("19", 123));
+		tree.insert("4", fileKey("4", 23));
+		tree.insert("10", fileKey("10", 32123));
+		tree.insert("16", fileKey("16", 3223));
+		tree.insert("9", fileKey("9", 3223));
+		tree.insert("14", fileKey("14", 3223));
+		tree.insert("1", fileKey("1", 3223));
+		tree.insert("7", fileKey("7", 3223));
+		tree.insert("5", fileKey("4", 3223));
 
-		tree.remove("CABDER");
+		io.output(tree.get_graphviz());
 
-		io.output(tree["CABDER"].offset);
+		tree.remove("13");
+		tree.remove("14");
+		tree.remove("9");
+
+		io.output(tree.get_graphviz());
 		return 0;
 	}
 }

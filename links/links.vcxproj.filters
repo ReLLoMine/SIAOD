@@ -45,6 +45,9 @@
     <ClCompile Include="bin_trees.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="b_tree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="sorts.h">
@@ -81,6 +84,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="bin_trees.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="b_tree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
